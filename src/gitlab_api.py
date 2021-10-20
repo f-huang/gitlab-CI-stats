@@ -22,9 +22,9 @@ def get_project_by_id(project_id: str):
     return response.json()
 
 
-def get_project_pipelines(project_id: str, ref: str = "master"):
-    params = {"order_by": "updated_at",
-              "sort": "desc", "per_page": 100, "ref": ref}
+def get_project_pipelines(project_id: str, ref: str = "master", page=1):
+    params = {"order_by": "id",
+              "sort": "desc", "per_page": 100, "page": page, "ref": ref}
     response = requests.get("{base_url}/projects/{project_id}/pipelines".format(
         base_url=GITLAB_REST_ENDPOINT, project_id=project_id), headers=GITLAB_REQUEST_HEADERS, params=params)
     return response.json()
