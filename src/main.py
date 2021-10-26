@@ -1,6 +1,6 @@
 import argparse
-from gitlab_api import get_project_pipelines
-
+from gitlab_pipelines import get_pipelines_by_date, hydrate_pipelines
+from csv_writer import write_pipelines_to_csv
 
 if __name__ == '__main__':
     print("Hello World !")
@@ -9,5 +9,7 @@ if __name__ == '__main__':
     parser.add_argument("project_id", type=int, help="GitLab's project id")
     args = parser.parse_args()
 
-    pipelines = get_project_pipelines(args.project_id)
-    print(pipelines)
+    pipelines = get_pipelines_by_date(args.project_id, "2021-01-01")
+    pipelines = hydrate_pipelines(args.project_id, pipelines)
+
+    write_pipelines_to_csv(pipelines)
