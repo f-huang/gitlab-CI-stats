@@ -1,13 +1,13 @@
 import pytz
+import datetime
 
 from iso8601 import parse_date
 from gitlab_api import get_project_pipelines, get_pipeline_by_id
-from datetime import datetime
 
 
-def get_pipelines_by_date(project_id: str, start_date: str):
-    start_date = datetime.strptime(
-        start_date, "%Y-%m-%d").replace(tzinfo=pytz.utc)
+def get_pipelines_by_date(project_id: str, start_date: datetime.date):
+    start_date = datetime.datetime(
+        start_date.year, start_date.month, start_date.day).replace(tzinfo=pytz.utc)
     page = 1
     last_date_found = None
     pipelines = []

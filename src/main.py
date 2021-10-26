@@ -1,4 +1,6 @@
 import argparse
+import datetime
+
 from gitlab_pipelines import get_pipelines_by_date, hydrate_pipelines
 from csv_writer import write_pipelines_to_csv
 
@@ -7,9 +9,14 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
     parser.add_argument("project_id", type=int, help="GitLab's project id")
+    parser.add_argument("--until_date", required=True, type=datetime.date.fromisoformat,
+                        help="Get pipelines until a certain date. Format YYYY-MM-DD")
+    parser.add_argument("--output_filepath",  type=str, default="pipelines.csv",
+                        help="Output filepath of csv")
     args = parser.parse_args()
 
-    pipelines = get_pipelines_by_date(args.project_id, "2021-01-01")
+    pipelines = get_pipelines_by_date(args.project_id, args.until_date)
     pipelines = hydrate_pipelines(args.project_id, pipelines)
 
-    write_pipelines_to_csv(pipelines)
+    write_pipelines_to_csv(args.output_filepath, pipelines)
+    print("results stored at {}".format(args.output_filepath))
