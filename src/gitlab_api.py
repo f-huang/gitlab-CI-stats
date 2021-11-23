@@ -34,3 +34,17 @@ def get_pipeline_by_id(project_id: str, pipeline_id: str):
     response = requests.get("{base_url}/projects/{project_id}/pipelines/{pipeline_id}".format(
         base_url=GITLAB_REST_ENDPOINT, project_id=project_id, pipeline_id=pipeline_id), headers=GITLAB_REQUEST_HEADERS)
     return response.json()
+
+
+def get_project_jobs(project_id: str, page=1):
+    params = {"order_by": "id",
+              "sort": "desc", "per_page": 100, "page": page}
+    response = requests.get("{base_url}/projects/{project_id}/jobs".format(
+        base_url=GITLAB_REST_ENDPOINT, project_id=project_id), headers=GITLAB_REQUEST_HEADERS, params=params)
+    return response.json()
+
+
+def get_job_by_id(project_id: str, job_id: str):
+    response = requests.get("{base_url}/projects/{project_id}/jobs/{job_id}".format(
+        base_url=GITLAB_REST_ENDPOINT, project_id=project_id, job_id=job_id), headers=GITLAB_REQUEST_HEADERS)
+    return response.json()
